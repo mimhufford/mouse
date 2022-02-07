@@ -19,6 +19,13 @@ bool closing = false;
 
 double lerp(double a, double b, double t) { return a + t * (b - a); }
 
+void begin_closing()
+{
+    closing = true;
+    dim_target = 0;
+    spotlight_target_radius = 1;
+}
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nShowCmd)
 {
     int width = 1920;
@@ -49,16 +56,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
         return -1;
     }
 
-    // move window to top left
-    glfwSetWindowPos(window, 0, 0);
-
-    // listen for escape key
+    // listen for key press
     glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-            closing = true;
-            dim_target = 0;
-            spotlight_target_radius = 1;
-        }
+        if (action == GLFW_PRESS) begin_closing();
+    });
+
+    // listen for click
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
+        if (action == GLFW_PRESS) begin_closing();
     });
 
     // listen for mouse wheel scrolling
