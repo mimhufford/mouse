@@ -5,7 +5,7 @@
 // TODO:
 // - go fullscreen, currently even at 1080 the window doesn't fully cover the start bar for some reason
 // - once proper fullscreen works use the monitor resolution instead of hardcoding values
-// - get rid of window flash when first loading up / have process always running in background?
+// - have process always running in background?
 
 const double PI = 3.14159265359;
 const double TAU = PI * 2;
@@ -38,6 +38,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
     // say that we want always on top
     glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
 
+    // say that we want a borderless window
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+
     // create a windowed mode window and its OpenGL context
     GLFWwindow *window = glfwCreateWindow(width, height, "Mouse Highlighter", NULL, NULL);
     if (!window)
@@ -45,9 +48,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
         glfwTerminate();
         return -1;
     }
-
-    // remove window borders
-    glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
 
     // move window to top left
     glfwSetWindowPos(window, 0, 0);
