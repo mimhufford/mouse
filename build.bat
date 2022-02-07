@@ -1,1 +1,1 @@
-cl -nologo mouse.cpp /O2 /MD /link GDI32.lib User32.lib OpenGL32.lib Shell32.lib dep/GLFW3.lib
+cl -nologo mouse.cpp /O2 /MD /link GDI32.lib User32.lib OpenGL32.lib Shell32.lib deps/GLFW3.lib

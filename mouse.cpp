@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <math.h>
-#include "dep/glfw3.h"
+#include "deps/glfw3.h"
 
 // TODO:
 // - go fullscreen, currently even at 1080 the window doesn't fully cover the start bar for some reason
