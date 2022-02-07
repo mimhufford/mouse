@@ -3,7 +3,7 @@
 #include "deps/glfw3.h"
 
 // TODO:
-// - go fullscreen, currently even at 1080 the window doesn't fully cover the start bar for some reason
+// - going full 1920x1080 causes transparency not to work
 // - once proper fullscreen works use the monitor resolution instead of hardcoding values
 // - have process always running in background?
 
@@ -29,7 +29,7 @@ void begin_closing()
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nShowCmd)
 {
     int width = 1920;
-    int height = 1020;
+    int height = 1079;
     float ratio = (float)width / (float)height;
 
     // initialize the library
