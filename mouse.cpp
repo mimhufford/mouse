@@ -183,26 +183,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
             glVertex2f(x0, y0);
         }
 
-        // top bar
-        glVertex2f(-1, 1);
-        glVertex2f(1, 1);
-        glVertex2f(1, y + ry);
-        glVertex2f(-1, y + ry);
-        // bottom bar
-        glVertex2f(-1, -1);
-        glVertex2f(1, -1);
-        glVertex2f(1, y - ry);
-        glVertex2f(-1, y - ry);
-        // left chunk
-        glVertex2f(-1, y + ry);
-        glVertex2f(x - rx, y + ry);
-        glVertex2f(x - rx, y - ry);
-        glVertex2f(-1, y - ry);
-        // right chunk
-        glVertex2f(x + rx, y + ry);
-        glVertex2f(1, y + ry);
-        glVertex2f(1, y - ry);
-        glVertex2f(x + rx, y - ry);
+        auto draw_rectangle = [](double x0, double y0, double x1, double y1)
+        {
+            glVertex2f(x0, y0);
+            glVertex2f(x1, y0);
+            glVertex2f(x1, y1);
+            glVertex2f(x0, y1);
+        };
+
+        draw_rectangle(    -1,  1,  1, y + ry); // top
+        draw_rectangle(    -1, -1,  1, y - ry); // bottom
+        draw_rectangle(x - rx, -1, -1,      1); // left
+        draw_rectangle(x + rx, -1,  1,      1); // right
 
         glEnd();
 
