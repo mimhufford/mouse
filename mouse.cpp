@@ -125,45 +125,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
             glVertex2f(x3, y3);
         };
 
-        // top right quadrant
-        for (int i = 0*(spotlight_segments/4); i < 1*(spotlight_segments/4); ++i)
+        for (int i = 0; i < spotlight_segments; ++i)
         {
-            double x0 = x + sin(i*TAU/spotlight_segments) * rx;
-            double y0 = y + cos(i*TAU/spotlight_segments) * ry;
+            double x0 = x + sin((i+0)%spotlight_segments*TAU/spotlight_segments) * rx;
+            double y0 = y + cos((i+0)%spotlight_segments*TAU/spotlight_segments) * ry;
             double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
             double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            draw_quad(x0, 1, x1, 1, x1, y1, x0, y0);
-            draw_quad(1, y0, 1, y1, x1, y1, x0, y0);
-        }
-        // bottom right quadrant
-        for (int i = 1*(spotlight_segments/4); i < 2*(spotlight_segments/4); ++i)
-        {
-            double x0 = x + sin(i*TAU/spotlight_segments) * rx;
-            double y0 = y + cos(i*TAU/spotlight_segments) * ry;
-            double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
-            double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            draw_quad(x0, -1, x1, -1, x1, y1, x0, y0);
-            draw_quad(1, y0, 1, y1, x1, y1, x0, y0);
-        }
-        // bottom left quadrant
-        for (int i = 2*(spotlight_segments/4); i < 3*(spotlight_segments/4); ++i)
-        {
-            double x0 = x + sin(i*TAU/spotlight_segments) * rx;
-            double y0 = y + cos(i*TAU/spotlight_segments) * ry;
-            double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
-            double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            draw_quad(x0, -1, x1, -1, x1, y1, x0, y0);
-            draw_quad(-1, y0, -1, y1, x1, y1, x0, y0);
-        }
-        // top left quadrant
-        for (int i = 3*(spotlight_segments/4); i < 4*(spotlight_segments/4); ++i)
-        {
-            double x0 = x + sin(i*TAU/spotlight_segments) * rx;
-            double y0 = y + cos(i*TAU/spotlight_segments) * ry;
-            double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
-            double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            draw_quad(x0, 1, x1, 1, x1, y1, x0, y0);
-            draw_quad(-1, y0, -1, y1, x1, y1, x0, y0);
+
+            if (i < spotlight_segments / 4 * 1) // top right quadrant
+            {
+                draw_quad(x0, 1, x1, 1, x1, y1, x0, y0);
+                draw_quad(1, y0, 1, y1, x1, y1, x0, y0);
+            }
+            else if (i < spotlight_segments / 4 * 2) // bottom right quadrant
+            {
+                draw_quad(x0, -1, x1, -1, x1, y1, x0, y0);
+                draw_quad(1, y0, 1, y1, x1, y1, x0, y0);
+            }
+            else if (i < spotlight_segments / 4 * 3) // bottom left quadrant
+            {
+                draw_quad(x0, -1, x1, -1, x1, y1, x0, y0);
+                draw_quad(-1, y0, -1, y1, x1, y1, x0, y0);
+            }
+            else // top left quadrant
+            {
+                draw_quad(x0, 1, x1, 1, x1, y1, x0, y0);
+                draw_quad(-1, y0, -1, y1, x1, y1, x0, y0);
+            }
         }
 
         auto draw_rectangle = [](double x0, double y0, double x1, double y1)
