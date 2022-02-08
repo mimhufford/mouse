@@ -6,8 +6,7 @@
 // - why does exact resolution cause transparency to break? See :ExactResolution:
 // - have process always running in background?
 
-const double PI = 3.14159265359;
-const double TAU = PI * 2;
+const double TAU = 6.283185307179586;
 const double dim_amount = 0.7;
 const int spotlight_segments = 60*4;
 double dim_target = dim_amount;
