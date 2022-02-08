@@ -39,9 +39,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
     int height = mode->height + 1; // see :ExactResolution:
     float ratio = (float)mode->width / (float)mode->height;
 
-    // reset the window hints to default
-    glfwDefaultWindowHints();
-
     // say that we want transparency
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 
