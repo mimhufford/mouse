@@ -24,11 +24,10 @@ void begin_closing()
     spotlight_target_radius = 1;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nShowCmd)
+int WINAPI WinMain(HINSTANCE, HINSTANCE, char *, int)
 {
     // initialize the library
-    if (!glfwInit())
-        return -1;
+    if (!glfwInit()) return -1;
 
     // get resolution information
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -50,11 +49,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
 
     // create a windowed mode window and its OpenGL context
     GLFWwindow *window = glfwCreateWindow(width, height, "Mouse Highlighter", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+    if (!window) { glfwTerminate(); return -1; }
 
     // listen for key press
     glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
