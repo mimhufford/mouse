@@ -118,6 +118,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
         glBegin(GL_QUADS);
         glColor4f(0, 0, 0, dim_current);
 
+        auto draw_quad = [](double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3)
+        {
+            glVertex2f(x0, y0);
+            glVertex2f(x1, y1);
+            glVertex2f(x2, y2);
+            glVertex2f(x3, y3);
+        };
+
         // top right quadrant
         for (int i = 0*(spotlight_segments/4); i < 1*(spotlight_segments/4); ++i)
         {
@@ -125,14 +133,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
             double y0 = y + cos(i*TAU/spotlight_segments) * ry;
             double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
             double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            glVertex2f(x0, 1);
-            glVertex2f(x1, 1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
-            glVertex2f(1, y0);
-            glVertex2f(1, y1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
+            draw_quad(x0, 1, x1, 1, x1, y1, x0, y0);
+            draw_quad(1, y0, 1, y1, x1, y1, x0, y0);
         }
         // bottom right quadrant
         for (int i = 1*(spotlight_segments/4); i < 2*(spotlight_segments/4); ++i)
@@ -141,14 +143,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
             double y0 = y + cos(i*TAU/spotlight_segments) * ry;
             double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
             double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            glVertex2f(x0, -1);
-            glVertex2f(x1, -1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
-            glVertex2f(1, y0);
-            glVertex2f(1, y1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
+            draw_quad(x0, -1, x1, -1, x1, y1, x0, y0);
+            draw_quad(1, y0, 1, y1, x1, y1, x0, y0);
         }
         // bottom left quadrant
         for (int i = 2*(spotlight_segments/4); i < 3*(spotlight_segments/4); ++i)
@@ -157,14 +153,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
             double y0 = y + cos(i*TAU/spotlight_segments) * ry;
             double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
             double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            glVertex2f(x0, -1);
-            glVertex2f(x1, -1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
-            glVertex2f(-1, y0);
-            glVertex2f(-1, y1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
+            draw_quad(x0, -1, x1, -1, x1, y1, x0, y0);
+            draw_quad(-1, y0, -1, y1, x1, y1, x0, y0);
         }
         // top left quadrant
         for (int i = 3*(spotlight_segments/4); i < 4*(spotlight_segments/4); ++i)
@@ -173,14 +163,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nSh
             double y0 = y + cos(i*TAU/spotlight_segments) * ry;
             double x1 = x + sin((i+1)%spotlight_segments*TAU/spotlight_segments) * rx;
             double y1 = y + cos((i+1)%spotlight_segments*TAU/spotlight_segments) * ry;
-            glVertex2f(x0, 1);
-            glVertex2f(x1, 1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
-            glVertex2f(-1, y0);
-            glVertex2f(-1, y1);
-            glVertex2f(x1, y1);
-            glVertex2f(x0, y0);
+            draw_quad(x0, 1, x1, 1, x1, y1, x0, y0);
+            draw_quad(-1, y0, -1, y1, x1, y1, x0, y0);
         }
 
         auto draw_rectangle = [](double x0, double y0, double x1, double y1)
