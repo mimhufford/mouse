@@ -38,33 +38,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, char *, int)
     int height = mode->height + 1; // see :ExactResolution:
     float ratio = (float)mode->width / (float)mode->height;
 
-    // say that we want transparency
-    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+    // set the window type
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE); // transparent
+    glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);                // always on top
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);              // borderless
 
-    // say that we want always on top
-    glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
-
-    // say that we want a borderless window
-    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-
-    // create a windowed mode window and its OpenGL context
+    // create a window and its OpenGL context
     GLFWwindow *window = glfwCreateWindow(width, height, "Mouse Highlighter", NULL, NULL);
     if (!window) { glfwTerminate(); return -1; }
 
     // listen for key press
-    glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+    glfwSetKeyCallback(window, [](GLFWwindow*, int, int, int action, int) {
         if (action == GLFW_PRESS) begin_closing();
     });
 
     // listen for click
-    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
+    glfwSetMouseButtonCallback(window, [](GLFWwindow*, int, int action, int) {
         if (action == GLFW_PRESS) begin_closing();
     });
 
     // listen for mouse wheel scrolling
-    glfwSetScrollCallback(window, [](GLFWwindow *window, double xoffset, double yoffset) {
+    glfwSetScrollCallback(window, [](GLFWwindow*, double, double scroll) {
         if (closing) return;
-        spotlight_target_radius += yoffset * -0.05;
+        spotlight_target_radius += scroll * -0.05;
         if (spotlight_target_radius < 0.05) spotlight_target_radius = 0.05;
         if (spotlight_target_radius > 0.60) spotlight_target_radius = 0.60;
     });
