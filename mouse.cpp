@@ -3,8 +3,7 @@
 #include "deps/glfw3.h"
 
 // TODO:
-// - going full 1920x1080 causes transparency not to work
-// - once proper fullscreen works use the monitor resolution instead of hardcoding values
+// - why does exact resolution cause transparency to break? See :ExactResolution:
 // - have process always running in background?
 
 const double PI = 3.14159265359;
@@ -28,13 +27,18 @@ void begin_closing()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *, int nShowCmd)
 {
-    int width = 1920;
-    int height = 1079;
-    float ratio = (float)width / (float)height;
-
     // initialize the library
     if (!glfwInit())
         return -1;
+
+    // get resolution information
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+    // calculate aspect ratio
+    int width = mode->width;
+    int height = mode->height + 1; // see :ExactResolution:
+    float ratio = (float)mode->width / (float)mode->height;
 
     // reset the window hints to default
     glfwDefaultWindowHints();
