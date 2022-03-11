@@ -1,11 +1,12 @@
+#define GLFW_EXPOSE_NATIVE_WIN32
 #include <windows.h>
 #include <stdio.h>
 #include <math.h>
 #include "deps/glfw3.h"
+#include "deps/glfw3native.h"
 
 // TODO:
 // - why does exact resolution cause transparency to break? See :ExactResolution:
-// - don't show icon on taskbar when spotlight window is active
 
 const double TAU = 6.283185307179586;
 const double dim_amount = 0.7;
@@ -54,6 +55,13 @@ int show_spotlight()
     // create a window and its OpenGL context
     GLFWwindow *window = glfwCreateWindow(width, height, "Mouse Highlighter", NULL, NULL);
     if (!window) { glfwTerminate(); return 2; }
+
+    // remove the taskbar icon - feels a little hacky, the other option is to explore
+    // having the main entry point be a graphical application that has no visuals except
+    // living in the system tray, then make that the parent of this spotlight window
+    HWND hwnd = glfwGetWin32Window(window);
+    DWORD style = GetWindowLong(hwnd, GWL_EXSTYLE);
+    SetWindowLong(hwnd, GWL_EXSTYLE, (style & ~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW);
 
     // listen for key press
     glfwSetKeyCallback(window, [](GLFWwindow*, int, int, int action, int) {
