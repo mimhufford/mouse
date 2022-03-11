@@ -1,19 +1,20 @@
 #include <windows.h>
+#include <stdio.h>
 #include <math.h>
 #include "deps/glfw3.h"
 
 // TODO:
 // - why does exact resolution cause transparency to break? See :ExactResolution:
-// - have process always running in background?
+// - don't show icon on taskbar when spotlight window is active
 
 const double TAU = 6.283185307179586;
 const double dim_amount = 0.7;
 const int spotlight_segments = 60*4;
-double dim_target = dim_amount;
-double dim_current = 0;
-double spotlight_target_radius = 0.1;
-double spotlight_current_radius = 1;
-bool closing = false;
+double dim_target;
+double dim_current;
+double spotlight_target_radius;
+double spotlight_current_radius;
+bool closing;
 
 double lerp(double a, double b, double t) { return a + t * (b - a); }
 
@@ -24,8 +25,15 @@ void begin_closing()
     spotlight_target_radius = 1;
 }
 
-int WINAPI WinMain(HINSTANCE, HINSTANCE, char *, int)
+int show_spotlight()
 {
+    // reset values
+    dim_target = dim_amount;
+    dim_current = 0;
+    spotlight_target_radius = 0.1;
+    spotlight_current_radius = 1;
+    closing = false;
+
     // initialize the library
     if (!glfwInit()) return -1;
 
@@ -165,5 +173,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, char *, int)
     }
 
     glfwTerminate();
+    return 0;
+}
+
+int main()
+{           
+    if (RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 0x42))  //0x42 is 'b'
+    {
+        printf("Hotkey 'ALT+b' registered, using MOD_NOREPEAT flag\n");
+    }
+ 
+    MSG msg = {0};
+    while (GetMessage(&msg, NULL, 0, 0) != 0)
+    {
+        if (msg.message == WM_HOTKEY)
+        {
+            printf("%d", show_spotlight());
+        }
+    } 
+ 
     return 0;
 }
