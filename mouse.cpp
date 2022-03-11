@@ -35,7 +35,7 @@ int show_spotlight()
     closing = false;
 
     // initialize the library
-    if (!glfwInit()) return -1;
+    if (!glfwInit()) return 1;
 
     // get resolution information
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -53,7 +53,7 @@ int show_spotlight()
 
     // create a window and its OpenGL context
     GLFWwindow *window = glfwCreateWindow(width, height, "Mouse Highlighter", NULL, NULL);
-    if (!window) { glfwTerminate(); return -1; }
+    if (!window) { glfwTerminate(); return 2; }
 
     // listen for key press
     glfwSetKeyCallback(window, [](GLFWwindow*, int, int, int action, int) {
@@ -178,17 +178,30 @@ int show_spotlight()
 
 int main()
 {           
-    if (RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 0x42))  //0x42 is 'b'
+    if (RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 'S') &&
+        RegisterHotKey(NULL, 2, MOD_ALT | MOD_NOREPEAT, 'Q'))
     {
-        printf("Hotkey 'ALT+b' registered, using MOD_NOREPEAT flag\n");
+        printf("'ALT+s' registered for spotlight\n");
+        printf("'ALT+q' registered for quitting\n");
+    }
+    else
+    {
+        printf("ERROR: Couldn't register keyboard shortcuts.");
+        return 1;
     }
  
     MSG msg = {0};
     while (GetMessage(&msg, NULL, 0, 0) != 0)
     {
-        if (msg.message == WM_HOTKEY)
+        if (msg.message == WM_HOTKEY && msg.wParam == 1)
         {
-            printf("%d", show_spotlight());
+            int result = show_spotlight();
+            if (result) printf("ERROR: %d\n", result);
+        }
+
+        if (msg.message == WM_HOTKEY && msg.wParam == 2)
+        {
+            return 0;
         }
     } 
  
