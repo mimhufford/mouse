@@ -184,19 +184,16 @@ int show_spotlight()
     return 0;
 }
 
-int main()
-{           
-    if (RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 'S') &&
-        RegisterHotKey(NULL, 2, MOD_ALT | MOD_NOREPEAT, 'Q'))
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+{
+    MessageBoxA(NULL, "Running in background.\n\nalt+s to show spotlight\nalt+q to quit background process", "Mouse Spotlight", 0);
+
+    if (!RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 'S') ||
+        !RegisterHotKey(NULL, 2, MOD_ALT | MOD_NOREPEAT, 'Q'))
     {
-        printf("'ALT+s' registered for spotlight\n");
-        printf("'ALT+q' registered for quitting\n");
+        return 1; // already running
     }
-    else
-    {
-        printf("ERROR: Couldn't register keyboard shortcuts.");
-        return 1;
-    }
+
  
     MSG msg = {0};
     while (GetMessage(&msg, NULL, 0, 0) != 0)
@@ -204,7 +201,12 @@ int main()
         if (msg.message == WM_HOTKEY && msg.wParam == 1)
         {
             int result = show_spotlight();
-            if (result) printf("ERROR: %d\n", result);
+            if (result)
+            {
+                char error[1024] = {};
+                sprintf(error, "Error code: %d", result);
+                return MessageBoxA(NULL, error, "ERROR", 0);
+            }
         }
 
         if (msg.message == WM_HOTKEY && msg.wParam == 2)
